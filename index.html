@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Toets Engels Blink groep 7/8 – song 1-2-3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f6fb;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d5deea;--acc:#1d4e9e;--accink:#fff;--gold:#f4b400;--ok:#1a7f45;--okbg:#e2f5ea;--bad:#b3261e;--badbg:#fdeaea}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1624;--card:#182236;--ink:#eaf0fb;--mute:#9aa7bd;--line:#2a3854;--acc:#7fb0ff;--accink:#0f1624;--ok:#6ddc9a;--okbg:#12301f;--bad:#ff9b94;--badbg:#3a1a1a}}
+:root[data-theme="dark"]{--bg:#0f1624;--card:#182236;--ink:#eaf0fb;--mute:#9aa7bd;--line:#2a3854;--acc:#7fb0ff;--accink:#0f1624;--ok:#6ddc9a;--okbg:#12301f;--bad:#ff9b94;--badbg:#3a1a1a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito","Segoe UI",system-ui,sans-serif;line-height:1.5;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+main{max-width:580px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.6rem;margin:6px 0 4px;line-height:1.25}
+h2{font-size:1.15rem;margin:22px 0 10px}
+p.sub{margin:0 0 18px;color:var(--mute)}
+.list button{display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-left:8px solid var(--gold);border-radius:12px;padding:14px 16px;margin-bottom:12px;font:inherit;color:inherit;cursor:pointer}
+.list button:hover,.list button:focus-visible{border-color:var(--acc);border-left-color:var(--acc);outline:none}
+.list b{display:block;font-size:1.1rem}
+.list span{color:var(--mute);font-size:.92rem}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:5px;margin-bottom:6px}
+.seg button{font:inherit;font-weight:700;padding:10px 4px;border:0;border-radius:8px;background:transparent;color:var(--ink);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--acc);color:var(--accink)}
+.seg button:focus-visible{outline:3px solid var(--gold)}
+.hint{color:var(--mute);font-size:.9rem;margin:0 0 16px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;color:var(--mute);font-size:.95rem}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;background:var(--gold);width:0;transition:width .25s}
+.q{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:20px}
+.dir{color:var(--mute);font-size:.9rem;margin-bottom:6px}
+.prompt{font-size:1.5rem;font-weight:800;margin-bottom:16px;overflow-wrap:anywhere}
+input{width:100%;font:inherit;font-size:1.15rem;padding:12px;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+input:focus{outline:3px solid var(--acc);outline-offset:1px}
+.row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:800;padding:11px 18px;border-radius:8px;border:2px solid var(--acc);background:var(--acc);color:var(--accink);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--acc)}
+.btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.fb{margin-top:14px;padding:12px;border-radius:8px;font-weight:800;overflow-wrap:anywhere}
+.fb.ok{background:var(--okbg);color:var(--ok)}
+.fb.bad{background:var(--badbg);color:var(--bad)}
+.fb small{display:block;font-weight:400;color:var(--ink);font-size:1rem}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;font-size:1.05rem;text-align:left;padding:12px;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);cursor:pointer;overflow-wrap:anywhere}
+.opt:hover:not(:disabled),.opt:focus-visible{border-color:var(--acc);outline:none}
+.opt:disabled{cursor:default}
+.opt.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok);font-weight:800}
+.opt.no{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.res{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:24px}
+.res .big{font-size:2.4rem;font-weight:800;text-align:center}
+.res .msg{text-align:center;margin:4px 0 8px}
+.wrong{margin:10px 0;padding:0;list-style:none}
+.wrong li{border:2px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:8px;overflow-wrap:anywhere}
+.wrong .g{color:var(--bad)}.wrong .j{color:var(--ok)}
+.hist{list-style:none;margin:0;padding:0}
+.hist li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.hist li span{color:var(--mute);font-size:.92rem}
+.hist li b{white-space:nowrap}
+.empty{color:var(--mute)}
+.list button.ib{display:flex;align-items:center;gap:14px}
+.ic{flex:none;width:52px;height:52px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font-size:1.7rem;font-style:normal;line-height:1}
+.list button.toets{border-left-color:var(--acc);background:var(--okbg)}
+.parts{list-style:none;padding:0;margin:14px 0 6px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.parts li{border:2px solid var(--line);border-radius:8px;padding:8px;text-align:center}
+.parts span{display:block;color:var(--mute);font-size:.9rem}
+</style>
+</head>
+<body>
+<main><div id="app"></div></main>
+<script>
+/* ===== LESSTOF =====
+   Nieuwe les toevoegen: zet een nieuw blok in LESSONS.
+   W = Words to know, P = Phrases, G = Grammar (laat weg als de les dat niet heeft).
+   Formaat: ["Engels", "Nederlands"]. Meerdere goede antwoorden scheiden met | (de eerste wordt getoond). */
+const LESSONS=[
+{id:"s1",icon:"🕶️",name:"Song 1 – The feeling",sub:"Lost Frequencies · uiterlijk",
+ W:[["hair","haren"],["blonde","blond"],["curly","gekruld"],["straight","steil"],["long","lang"],["short","kort"],["face","gezicht"],["round","rond"],["dark","donker"],["moustache","snor"],["bald","kaal"]],
+ P:[["He wears glasses.","Hij draagt een bril."],["He has a light beard.","Hij heeft een lichte baard."],["I have brown eyes.","Ik heb bruine ogen."],["I have light skin.","Ik heb een lichte huid."]]},
+{id:"s2",icon:"🍕",name:"Song 2 – Food",sub:"Eten en koken",
+ W:[["tomato","tomaat"],["carrot","wortel"],["pepper","paprika"],["lettuce","sla"],["cucumber","komkommer"],["beef","rundvlees"],["chicken","kip"],["cheese","kaas"],["crunchy","knapperig"],["sweet","zoet"],["sour","zuur"],["soft","zacht"],["hard","hard"],["creamy","romig"],["spicy","pittig"],["greasy","vettig"],["smelly","stinkend"],["meatballs","gehaktballetjes"],["mashed potatoes","aardappelpuree"],["boil","koken"],["bake","bakken"],["cut","snijden"],["piece","stukje|stuk"]],
+ P:[["You can fill tacos with beef or chicken.","Je kunt taco's vullen met rundvlees of kip."],["Most pizzas have a crunchy crust.","De meeste pizza's hebben een knapperige korst."],["To make pancakes you need milk, butter and flour.","Om pannenkoeken te maken heb je melk, boter en meel nodig."],["This green salad has lettuce, cucumber and a lemon dressing.","In deze groene salade zit sla, komkommer en een dressing met citroen."],["You can eat it with your hands.","Je kunt het met je handen eten."],["It tastes delicious.","Het smaakt heerlijk."],["It is very healthy.","Het is heel gezond."],["Everyone likes it.","Iedereen vindt het lekker."],["You can eat it with different vegetables.","Je kunt het met verschillende groenten eten."]],
+ gName:"It is / They are",
+ G:[["It is red and a bit sour.","Het is rood en een beetje zuur."],["It is not hard.","Het is niet hard."],["It's not hard.","Het is niet hard."],["They are orange and crunchy.","Ze zijn oranje en knapperig."],["They are not sour.","Ze zijn niet zuur."],["They're not sour.","Ze zijn niet zuur."]]},
+{id:"s3",icon:"🎈",name:"Song 3 – Being young",sub:"Jong zijn en volwassen worden",
+ W:[["forever","voor altijd"],["young","jong"],["old","oud"],["healthier","gezonder"],["fitter","fitter"],["fear","angst"],["job","baan"],["drive a car","autorijden|auto rijden"],["time to play","tijd om te spelen"],["do nothing","niets doen|niks doen"],["change","veranderen"],["fizzy drink","frisdrank"],["look forward to","uitkijken naar"],["decide","besluiten|beslissen"],["chore","klusje|klus"],["stay up late","laat opblijven"],["go on holiday alone","alleen op vakantie gaan"],["listen to your parents","naar je ouders luisteren"],["take care of everything","overal voor zorgen"],["live on my own","op mezelf wonen"],["earn money","geld verdienen"],["make choices","keuzes maken"],["pay the bills","de rekeningen betalen"]],
+ P:[["What do you like about being young?","Wat vind je leuk aan jong zijn?"],["It's nice being young because you have a lot of free time.","Het is leuk om jong te zijn, omdat je dan veel vrije tijd hebt.|Het is leuk om jong te zijn omdat je veel vrije tijd hebt."],["What don't you like about being young?","Wat vind je niet leuk aan jong zijn?"],["What is your ideal age?","Wat is jouw ideale leeftijd?|Wat is je ideale leeftijd?"],["My ideal age is 24 years old.","Mijn ideale leeftijd is 24.|Mijn ideale leeftijd is 24 jaar."]],
+ gName:"Can or have to",
+ G:[["I can play outside.","Ik mag buitenspelen.|Ik mag buiten spelen."],["You can't eat what you like.","Je mag niet eten wat je lekker vindt."],["I have to do my homework.","Ik moet mijn huiswerk doen."],["You don't have to cook dinner.","Je hoeft geen eten te koken."]]}
+];
+
+/* ===== APP ===== */
+const TITLE="Toets Engels Blink groep 7/8";
+const KEY="toets-engels-blink-geschiedenis";
+const TYPES=[["mix","Mix"],["open","Open vraag"],["mc","Meerkeuze"]];
+const app=document.getElementById("app");
+let type="mix",S=null;
+const swap=a=>a.map(([e,n])=>[n,e]);
+const first=s=>s.split("|")[0];
+const norm=s=>s.toLowerCase().replace(/[’‘`´]/g,"'").replace(/[.,!?;:"“”]/g,"").replace(/\s+/g," ").trim();
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const fmtDate=iso=>new Date(iso).toLocaleDateString("nl-NL",{day:"numeric",month:"long",year:"numeric"});
+function loadHist(){try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return []}}
+function saveHist(h){try{localStorage.setItem(KEY,JSON.stringify(h.slice(0,200)))}catch(e){}}
+
+function sections(L){
+ const s=[
+  {k:"wn",t:"Words to know: Nederlands → Engels",d:"Je ziet Nederlands, jij geeft het Engels"},
+  {k:"we",t:"Words to know: Engels → Nederlands",d:"Je ziet Engels, jij geeft het Nederlands"},
+  {k:"p",t:"Phrases: Engels → Nederlands",d:"Vertaal de zinnen naar het Nederlands"}];
+ if(L.G)s.push({k:"g",t:"Grammar ("+L.gName+"): Engels → Nederlands",d:L.id==="s3"?"Let op: mag, mag niet, moet, hoeft geen":"Let op: het is, het is niet, ze zijn, ze zijn niet"});
+ s.push({k:"all",t:"Alles door elkaar",d:"Alle onderdelen van deze song in één ronde"});
+ return s;
+}
+function questions(L,k){
+ const mk=(a,f,to,g)=>a.map(([x,y])=>({p:x,a:y,f,to,g}));
+ const parts={wn:()=>mk(swap(L.W),"Nederlands","Engels","wn"),we:()=>mk(L.W,"Engels","Nederlands","we"),p:()=>mk(L.P,"Engels","Nederlands","p"),g:()=>mk(L.G||[],"Engels","Nederlands","g")};
+ if(k==="all")return ["wn","we","p","g"].flatMap(x=>parts[x]());
+ return parts[k]();
+}
+
+/* ===== TOETS: song 1, 2 en 3 door elkaar ===== */
+const TOETS_N={w:15,p:10,g:10};
+const TOETS={name:"Toets oefenen",sub:`Song 1, 2 en 3 door elkaar · ${TOETS_N.w} woorden, ${TOETS_N.p} zinnen, ${TOETS_N.g} overige`};
+const TOETS_SEC=`Toets (${TOETS_N.w} woorden, ${TOETS_N.p} zinnen, ${TOETS_N.g} overige)`;
+const PART={wn:"Woorden",we:"Woorden",p:"Zinnen",g:"Overige"};
+const getL=li=>li==="toets"?TOETS:LESSONS[li];
+function toetsPick(){
+ const w=shuffle(LESSONS.flatMap(L=>L.W)).slice(0,TOETS_N.w).map(([e,n])=>Math.random()<.5?{p:n,a:e,f:"Nederlands",to:"Engels",g:"wn"}:{p:e,a:n,f:"Engels",to:"Nederlands",g:"we"});
+ const mk=(a,g)=>a.map(([e,n])=>({p:e,a:n,f:"Engels",to:"Nederlands",g}));
+ return [...w,...mk(shuffle(LESSONS.flatMap(L=>L.P)).slice(0,TOETS_N.p),"p"),...mk(shuffle(LESSONS.flatMap(L=>L.G||[])).slice(0,TOETS_N.g),"g")];
+}
+
+function segHTML(){
+ return `<h2>Hoe wil je oefenen?</h2><div class="seg" role="group" aria-label="Oefenvorm">`+
+  TYPES.map(([k,n])=>`<button data-t="${k}" aria-pressed="${k===type}">${n}</button>`).join("")+
+  `</div><p class="hint">${type==="mix"?"Open vragen en meerkeuze door elkaar.":type==="open"?"Je typt het antwoord zelf.":"Je kiest uit 4 antwoorden."}</p>`;
+}
+function bindSeg(draw){
+ app.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{type=b.dataset.t;draw();app.querySelector(`.seg [data-t="${type}"]`).focus()});
+}
+
+function home(){
+ S=null;document.onkeydown=null;
+ app.innerHTML=`<h1>${TITLE}</h1><p class="sub">Song 1, 2 en 3 · kies wat je wilt oefenen.</p><div class="list">
+  <button class="toets ib" id="toets"><i class="ic">📝</i><div><b>${TOETS.name}</b><span>${esc(TOETS.sub)}</span></div></button>`+
+  LESSONS.map((L,i)=>`<button class="ib" data-i="${i}"><i class="ic">${L.icon}</i><div><b>${esc(L.name)}</b><span>${esc(L.sub)}</span></div></button>`).join("")+
+  `</div><div class="row"><button class="btn ghost" id="h">Geschiedenis</button></div>`;
+ app.querySelectorAll(".list button[data-i]").forEach(b=>b.onclick=()=>lesson(+b.dataset.i));
+ document.getElementById("toets").onclick=toetsScreen;
+ document.getElementById("h").onclick=history;
+ document.getElementById("toets").focus();
+}
+
+function toetsScreen(){
+ S=null;document.onkeydown=null;
+ const draw=()=>{
+  app.innerHTML=`<div class="top"><button class="btn ghost" id="back">← Menu</button></div><h1>📝 ${TOETS.name}</h1>
+  <p class="sub">Alles van song 1, 2 en 3 door elkaar. Je krijgt <b>${TOETS_N.w} woorden</b> (Nederlands → Engels en Engels → Nederlands), <b>${TOETS_N.p} zinnen</b> en <b>${TOETS_N.g} overige vragen</b> (grammar). Elke keer kiest de app nieuwe vragen.</p>`+
+  segHTML()+`<div class="row"><button class="btn" id="go">Start de toets</button></div>`;
+  document.getElementById("back").onclick=home;
+  bindSeg(draw);
+  document.getElementById("go").onclick=()=>start("toets","toets",null,type);
+ };
+ draw();
+}
+
+function lesson(li){
+ S=null;document.onkeydown=null;
+ const L=LESSONS[li];
+ const draw=()=>{
+  app.innerHTML=`<div class="top"><button class="btn ghost" id="back">← Menu</button></div><h1>${L.icon} ${esc(L.name)}</h1><p class="sub">${esc(L.sub)}</p>`+
+  segHTML()+`<h2>Wat wil je oefenen?</h2><div class="list">`+
+  sections(L).map(s=>`<button data-k="${s.k}"><b>${esc(s.t)}</b><span>${esc(s.d)} · ${questions(L,s.k).length} vragen</span></button>`).join("")+`</div>`;
+  document.getElementById("back").onclick=home;
+  bindSeg(draw);
+  app.querySelectorAll(".list button").forEach(b=>b.onclick=()=>start(li,b.dataset.k,null,type));
+ };
+ draw();
+}
+function back(li){li==="toets"?toetsScreen():lesson(li)}
+
+function start(li,k,list,t,retry){
+ let all,sec;
+ if(li==="toets"){all=LESSONS.flatMap(L=>questions(L,"all"));list=list||toetsPick();sec=TOETS_SEC}
+ else{all=questions(LESSONS[li],k);sec=sections(LESSONS[li]).find(s=>s.k===k).t}
+ S={li,k,t,retry:!!retry,sec,all,list:shuffle(list||all).map(q=>({...q,kind:t==="mix"?(Math.random()<.5?"mc":"open"):t})),n:0,ok:0,bad:[]};
+ show();
+}
+function choices(q){
+ const c=first(q.a);
+ const pool=[...new Set(S.all.filter(x=>x.g===q.g).map(x=>first(x.a)).filter(x=>x!==c))];
+ return shuffle([c,...shuffle(pool).slice(0,3)]);
+}
+function show(){
+ if(S.n>=S.list.length)return result();
+ const q=S.list[S.n],good=first(q.a);
+ const head=`<div class="top"><button class="btn ghost" id="back">Stoppen</button><span>Vraag ${S.n+1} van ${S.list.length}</span></div><div class="bar"><i style="width:${S.n/S.list.length*100}%"></i></div><div class="q"><div class="dir">${q.f} → ${q.to}</div><div class="prompt">${esc(q.p)}</div>`;
+ let checked=false;
+ const next=()=>{S.n++;show()};
+ const done=(given,ok)=>{
+  checked=true;
+  if(ok)S.ok++;else S.bad.push({q,given});
+  document.getElementById("fb").innerHTML=ok?'<div class="fb ok">Goed zo!</div>':`<div class="fb bad">Niet helemaal.<small>Het goede antwoord is: <b>${esc(good)}</b></small></div>`;
+  const nx=document.getElementById("go");nx.textContent="Volgende";nx.style.display="";nx.onclick=next;nx.focus();
+  const sk=document.getElementById("skip");if(sk)sk.style.display="none";
+ };
+ if(q.kind==="mc"){
+  const o=choices(q);
+  app.innerHTML=head+'<div class="opts">'+o.map((t,k)=>`<button class="opt" data-k="${k}">${esc(t)}</button>`).join("")+'</div><div id="fb" aria-live="polite"></div><div class="row"><button class="btn" id="go" style="display:none">Volgende</button></div></div>';
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+   const t=o[+b.dataset.k],ok=t===good;
+   app.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(o[+x.dataset.k]===good)x.classList.add("ok")});
+   if(!ok)b.classList.add("no");
+   done(t,ok);
+  });
+  app.querySelector(".opt").focus();
+ }else{
+  app.innerHTML=head+'<input id="in" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Jouw antwoord" placeholder="Typ hier je antwoord"><div id="fb" aria-live="polite"></div><div class="row"><button class="btn" id="go">Controleer</button><button class="btn ghost" id="skip">Ik weet het niet</button></div></div>';
+  const inp=document.getElementById("in");inp.focus();
+  const check=skip=>{
+   if(checked){next();return}
+   if(!skip&&!inp.value.trim()){inp.focus();return}
+   const ok=!skip&&q.a.split("|").some(x=>norm(x)===norm(inp.value));
+   inp.disabled=true;
+   done(skip?"":inp.value.trim(),ok);
+  };
+  document.getElementById("go").onclick=()=>check(false);
+  document.getElementById("skip").onclick=()=>check(true);
+  inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();check(false)}};
+ }
+ document.getElementById("back").onclick=()=>back(S.li);
+ document.onkeydown=e=>{if(e.key==="Enter"&&checked&&document.activeElement.id!=="go"){e.preventDefault();next()}};
+}
+function result(){
+ document.onkeydown=null;
+ const L=getL(S.li),t=S.list.length,pct=Math.round(S.ok/t*100);
+ const h=loadHist();
+ h.unshift({d:new Date().toISOString(),l:L.name,s:S.sec+(S.retry?" (fouten)":""),t:TYPES.find(x=>x[0]===S.t)[1],pct});
+ saveHist(h);
+ const mine=loadHist().filter(x=>x.l===L.name).slice(0,5);
+ app.innerHTML=`<div class="res"><div class="big">${S.ok} van ${t}</div><p class="msg"><b>${pct}% goed</b> · ${pct===100?"Perfect! Alles goed.":pct>=80?"Heel goed bezig!":"Blijf oefenen, je komt er wel."}</p>
+ ${S.li==="toets"&&!S.retry?'<ul class="parts">'+["Woorden","Zinnen","Overige"].map(n=>{const tot=S.list.filter(q=>PART[q.g]===n).length,fout=S.bad.filter(b=>PART[b.q.g]===n).length;return tot?`<li><span>${n}</span><b>${tot-fout} van ${tot}</b></li>`:""}).join("")+"</ul>":""}
+ ${S.bad.length?'<h2>Deze gingen minder goed:</h2><ul class="wrong">'+S.bad.map(b=>`<li><b>${esc(b.q.p)}</b><br><span class="g">Jouw antwoord: ${b.given?esc(b.given):"(niets ingevuld)"}</span><br><span class="j">Goede antwoord: ${esc(first(b.q.a))}</span></li>`).join("")+"</ul>":""}
+ <div class="row">${S.bad.length?'<button class="btn" id="re">Oefen de fouten</button>':""}<button class="btn ghost" id="again">${S.li==="toets"?"Nieuwe toets":"Opnieuw"}</button><button class="btn ghost" id="m">Menu</button></div>
+ ${mine.length?`<h2>Eerder geoefend (${esc(L.name)})</h2>${histList(mine,false)}`:""}</div>`;
+ const {li,k,t:ty}=S;
+ if(S.bad.length)document.getElementById("re").onclick=()=>start(li,k,S.bad.map(b=>b.q),ty,true);
+ document.getElementById("again").onclick=()=>start(li,k,null,ty);
+ document.getElementById("m").onclick=()=>back(li);
+ (document.getElementById("re")||document.getElementById("again")).focus();
+}
+function histList(items,showLesson){
+ return '<ul class="hist">'+items.map(x=>`<li><div>${fmtDate(x.d)}<br><span>${showLesson?esc(x.l)+" · ":""}${esc(x.s)} · ${esc(x.t)}</span></div><b>${x.pct}%</b></li>`).join("")+"</ul>";
+}
+function history(){
+ const h=loadHist();
+ app.innerHTML=`<div class="top"><button class="btn ghost" id="back">← Menu</button></div><h1>Geschiedenis</h1><p class="sub">Je eerdere oefenrondes, de nieuwste bovenaan. Dit wordt alleen op dit apparaat bewaard.</p>`+
+  (h.length?histList(h,true)+'<div class="row"><button class="btn ghost" id="clr">Geschiedenis wissen</button></div>':'<p class="empty">Je hebt nog niet geoefend. Kies een song om te beginnen!</p>');
+ document.getElementById("back").onclick=home;
+ const c=document.getElementById("clr");
+ if(c)c.onclick=()=>{if(confirm("Weet je zeker dat je de hele geschiedenis wilt wissen?")){saveHist([]);history()}};
+}
+home();
+</script>
+</body>
+</html>
