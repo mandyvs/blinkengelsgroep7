@@ -75,10 +75,13 @@ input:focus{outline:3px solid var(--acc);outline-offset:1px}
    W = Words to know, P = Phrases, G = Grammar (laat weg als de les dat niet heeft).
    Formaat: ["Engels", "Nederlands"]. Meerdere goede antwoorden scheiden met | (de eerste wordt getoond). */
 const LESSONS=[
-{id:"s1",icon:"🕶️",name:"Song 1 – The feeling",sub:"Lost Frequencies · uiterlijk",
- W:[["hair","haren"],["blonde","blond"],["curly","gekruld"],["straight","steil"],["long","lang"],["short","kort"],["face","gezicht"],["round","rond"],["dark","donker"],["moustache","snor"],["bald","kaal"]],
- P:[["He wears glasses.","Hij draagt een bril."],["He has a light beard.","Hij heeft een lichte baard."],["I have brown eyes.","Ik heb bruine ogen."],["I have light skin.","Ik heb een lichte huid."]]},
-{id:"s2",icon:"🍕",name:"Song 2 – Food",sub:"Eten en koken",
+{id:"s1",icon:"👋",name:"Song 1 – Nice to meet you",sub:"Kennismaken · eigenschappen",
+ W:[["colour","kleur"],["awkward","ongemakkelijk"],["clumsy","onhandig"],["messy","slordig|rommelig"],["impatient","ongeduldig"],["shy","verlegen"],["serious","serieus"],["talkative","spraakzaam"],["patient","geduldig"],["surname","achternaam"],["country","land"],["first name","voornaam"],["kind of music","soort muziek"],["easy","makkelijk|gemakkelijk"],["usually","meestal"],["keeping secrets","geheimen bewaren"],["singer","zanger"],["musician","muzikant"],["enthusiastic","enthousiast"]],
+ P:[["Do you play football?","Speel jij voetbal?|Speel je voetbal?"],["Do you have any siblings?","Heb je broers of zussen?|Heb jij broers of zussen?"],["What are you good at?","Waar ben je goed in?|Waar ben jij goed in?"],["What do you like doing in your free time?","Wat doe jij graag in je vrije tijd?|Wat doe je graag in je vrije tijd?"],["What do you want to be when you grow up?","Wat wil je later worden?|Wat wil jij later worden?"],["What is your favourite food?","Wat is jouw lievelingseten?|Wat is je lievelingseten?"],["When is your birthday?","Wanneer ben je jarig?|Wanneer ben jij jarig?"],["Where do you come from?","Waar kom je vandaan?|Waar kom jij vandaan?"]],
+ gName:"Voorzetsels van tijd",gHint:"after, at, before, during, on, until",
+ G:[["after","na"],["at","om"],["before","voor"],["during","tijdens"],["on","op"],["until","tot"],
+  ["We can play together ___ lunch.","after","fill"],["Let's meet ___ 2 pm.","at","fill"],["Let's go swimming ___ dinner.","before","fill"],["We can talk ___ our walk home.","during","fill"],["I always play football ___ Saturdays.","on","fill"],["They stayed ___ the end of the concert.","until","fill"]]},
+{id:"s2",icon:"🍕",name:"Song 2 – Azizam",sub:"Ed Sheeran · eten en koken",
  W:[["tomato","tomaat"],["carrot","wortel"],["pepper","paprika"],["lettuce","sla"],["cucumber","komkommer"],["beef","rundvlees"],["chicken","kip"],["cheese","kaas"],["crunchy","knapperig"],["sweet","zoet"],["sour","zuur"],["soft","zacht"],["hard","hard"],["creamy","romig"],["spicy","pittig"],["greasy","vettig"],["smelly","stinkend"],["meatballs","gehaktballetjes"],["mashed potatoes","aardappelpuree"],["boil","koken"],["bake","bakken"],["cut","snijden"],["piece","stukje|stuk"]],
  P:[["You can fill tacos with beef or chicken.","Je kunt taco's vullen met rundvlees of kip."],["Most pizzas have a crunchy crust.","De meeste pizza's hebben een knapperige korst."],["To make pancakes you need milk, butter and flour.","Om pannenkoeken te maken heb je melk, boter en meel nodig."],["This green salad has lettuce, cucumber and a lemon dressing.","In deze groene salade zit sla, komkommer en een dressing met citroen."],["You can eat it with your hands.","Je kunt het met je handen eten."],["It tastes delicious.","Het smaakt heerlijk."],["It is very healthy.","Het is heel gezond."],["Everyone likes it.","Iedereen vindt het lekker."],["You can eat it with different vegetables.","Je kunt het met verschillende groenten eten."]],
  gName:"It is / They are",
@@ -110,13 +113,13 @@ function sections(L){
   {k:"wn",t:"Words to know: Nederlands → Engels",d:"Je ziet Nederlands, jij geeft het Engels"},
   {k:"we",t:"Words to know: Engels → Nederlands",d:"Je ziet Engels, jij geeft het Nederlands"},
   {k:"p",t:"Phrases: Engels → Nederlands",d:"Vertaal de zinnen naar het Nederlands"}];
- if(L.G)s.push({k:"g",t:"Grammar ("+L.gName+"): Engels → Nederlands",d:L.id==="s3"?"Let op: mag, mag niet, moet, hoeft geen":"Let op: het is, het is niet, ze zijn, ze zijn niet"});
+ if(L.G)s.push({k:"g",t:"Grammar: "+L.gName,d:L.gHint?L.gHint:L.id==="s3"?"Let op: mag, mag niet, moet, hoeft geen":"Let op: het is, het is niet, ze zijn, ze zijn niet"});
  s.push({k:"all",t:"Alles door elkaar",d:"Alle onderdelen van deze song in één ronde"});
  return s;
 }
 function questions(L,k){
  const mk=(a,f,to,g)=>a.map(([x,y])=>({p:x,a:y,f,to,g}));
- const parts={wn:()=>mk(swap(L.W),"Nederlands","Engels","wn"),we:()=>mk(L.W,"Engels","Nederlands","we"),p:()=>mk(L.P,"Engels","Nederlands","p"),g:()=>mk(L.G||[],"Engels","Nederlands","g")};
+ const parts={wn:()=>mk(swap(L.W),"Nederlands","Engels","wn"),we:()=>mk(L.W,"Engels","Nederlands","we"),p:()=>mk(L.P,"Engels","Nederlands","p"),g:()=>(L.G||[]).map(([x,y,z])=>z==="fill"?{p:x,a:y,f:"Vul het juiste Engelse woord in",to:"",g:"gf"}:{p:x,a:y,f:"Engels",to:"Nederlands",g:"g"})};
  if(k==="all")return ["wn","we","p","g"].flatMap(x=>parts[x]());
  return parts[k]();
 }
@@ -125,12 +128,12 @@ function questions(L,k){
 const TOETS_N={w:15,p:10,g:10};
 const TOETS={name:"Toets oefenen",sub:`Song 1, 2 en 3 door elkaar · ${TOETS_N.w} woorden, ${TOETS_N.p} zinnen, ${TOETS_N.g} overige`};
 const TOETS_SEC=`Toets (${TOETS_N.w} woorden, ${TOETS_N.p} zinnen, ${TOETS_N.g} overige)`;
-const PART={wn:"Woorden",we:"Woorden",p:"Zinnen",g:"Overige"};
+const PART={wn:"Woorden",we:"Woorden",p:"Zinnen",g:"Overige",gf:"Overige"};
 const getL=li=>li==="toets"?TOETS:LESSONS[li];
 function toetsPick(){
  const w=shuffle(LESSONS.flatMap(L=>L.W)).slice(0,TOETS_N.w).map(([e,n])=>Math.random()<.5?{p:n,a:e,f:"Nederlands",to:"Engels",g:"wn"}:{p:e,a:n,f:"Engels",to:"Nederlands",g:"we"});
  const mk=(a,g)=>a.map(([e,n])=>({p:e,a:n,f:"Engels",to:"Nederlands",g}));
- return [...w,...mk(shuffle(LESSONS.flatMap(L=>L.P)).slice(0,TOETS_N.p),"p"),...mk(shuffle(LESSONS.flatMap(L=>L.G||[])).slice(0,TOETS_N.g),"g")];
+ return [...w,...mk(shuffle(LESSONS.flatMap(L=>L.P)).slice(0,TOETS_N.p),"p"),...shuffle(LESSONS.flatMap(L=>questions(L,"g"))).slice(0,TOETS_N.g)];
 }
 
 function segHTML(){
@@ -197,7 +200,7 @@ function choices(q){
 function show(){
  if(S.n>=S.list.length)return result();
  const q=S.list[S.n],good=first(q.a);
- const head=`<div class="top"><button class="btn ghost" id="back">Stoppen</button><span>Vraag ${S.n+1} van ${S.list.length}</span></div><div class="bar"><i style="width:${S.n/S.list.length*100}%"></i></div><div class="q"><div class="dir">${q.f} → ${q.to}</div><div class="prompt">${esc(q.p)}</div>`;
+ const head=`<div class="top"><button class="btn ghost" id="back">Stoppen</button><span>Vraag ${S.n+1} van ${S.list.length}</span></div><div class="bar"><i style="width:${S.n/S.list.length*100}%"></i></div><div class="q"><div class="dir">${q.to?q.f+" → "+q.to:q.f}</div><div class="prompt">${esc(q.p)}</div>`;
  let checked=false;
  const next=()=>{S.n++;show()};
  const done=(given,ok)=>{
