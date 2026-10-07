@@ -101,7 +101,8 @@ const app=document.getElementById("app");
 let type="mix",S=null;
 const swap=a=>a.map(([e,n])=>[n,e]);
 const first=s=>s.split("|")[0];
-const norm=s=>s.toLowerCase().replace(/[’‘`´]/g,"'").replace(/[.,!?;:"“”]/g,"").replace(/\s+/g," ").trim();
+const CONTR=[[/\bcan't\b/g,"cannot"],[/\bcan not\b/g,"cannot"],[/\bwon't\b/g,"will not"],[/\bn't\b/g," not"],[/n't\b/g," not"],[/\blet's\b/g,"let us"],[/\b(it|he|she|what|where|when|who|that|there)'s\b/g,"$1 is"],[/'re\b/g," are"],[/'m\b/g," am"],[/'ll\b/g," will"],[/'ve\b/g," have"],[/'d\b/g," would"],[/\bwhats\b/g,"what is"],[/\bdont\b/g,"do not"],[/\bdoesnt\b/g,"does not"],[/\bcant\b/g,"cannot"],[/\bfavorite\b/g,"favourite"],[/\bcolor\b/g,"colour"]];
+const norm=s=>{s=s.toLowerCase().replace(/[’‘`´]/g,"'");CONTR.forEach(([r,v])=>s=s.replace(r,v));return s.replace(/[.,!?;:"“”]/g,"").replace(/\s+/g," ").trim()};
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 const fmtDate=iso=>new Date(iso).toLocaleDateString("nl-NL",{day:"numeric",month:"long",year:"numeric"});
@@ -112,14 +113,16 @@ function sections(L){
  const s=[
   {k:"wn",t:"Words to know: Nederlands → Engels",d:"Je ziet Nederlands, jij geeft het Engels"},
   {k:"we",t:"Words to know: Engels → Nederlands",d:"Je ziet Engels, jij geeft het Nederlands"},
-  {k:"p",t:"Phrases: Engels → Nederlands",d:"Vertaal de zinnen naar het Nederlands"}];
+  {k:"p",t:"Phrases: Nederlands → Engels",d:"Vertaal de zinnen naar het Engels · altijd open vraag"}];
  if(L.G)s.push({k:"g",t:"Grammar: "+L.gName,d:L.gHint?L.gHint:L.id==="s3"?"Let op: mag, mag niet, moet, hoeft geen":"Let op: het is, het is niet, ze zijn, ze zijn niet"});
  s.push({k:"all",t:"Alles door elkaar",d:"Alle onderdelen van deze song in één ronde"});
  return s;
 }
+/* Phrases: Nederlands → Engels, altijd open vraag */
+const phr=a=>a.map(([e,n])=>({p:first(n),a:e,f:"Nederlands",to:"Engels",g:"p",open:true}));
 function questions(L,k){
  const mk=(a,f,to,g)=>a.map(([x,y])=>({p:x,a:y,f,to,g}));
- const parts={wn:()=>mk(swap(L.W),"Nederlands","Engels","wn"),we:()=>mk(L.W,"Engels","Nederlands","we"),p:()=>mk(L.P,"Engels","Nederlands","p"),g:()=>(L.G||[]).map(([x,y,z])=>z==="fill"?{p:x,a:y,f:"Vul het juiste Engelse woord in",to:"",g:"gf"}:{p:x,a:y,f:"Engels",to:"Nederlands",g:"g"})};
+ const parts={wn:()=>mk(swap(L.W),"Nederlands","Engels","wn"),we:()=>mk(L.W,"Engels","Nederlands","we"),p:()=>phr(L.P),g:()=>(L.G||[]).map(([x,y,z])=>z==="fill"?{p:x,a:y,f:"Vul het juiste Engelse woord in",to:"",g:"gf"}:{p:x,a:y,f:"Engels",to:"Nederlands",g:"g"})};
  if(k==="all")return ["wn","we","p","g"].flatMap(x=>parts[x]());
  return parts[k]();
 }
@@ -133,7 +136,7 @@ const getL=li=>li==="toets"?TOETS:LESSONS[li];
 function toetsPick(){
  const w=shuffle(LESSONS.flatMap(L=>L.W)).slice(0,TOETS_N.w).map(([e,n])=>Math.random()<.5?{p:n,a:e,f:"Nederlands",to:"Engels",g:"wn"}:{p:e,a:n,f:"Engels",to:"Nederlands",g:"we"});
  const mk=(a,g)=>a.map(([e,n])=>({p:e,a:n,f:"Engels",to:"Nederlands",g}));
- return [...w,...mk(shuffle(LESSONS.flatMap(L=>L.P)).slice(0,TOETS_N.p),"p"),...shuffle(LESSONS.flatMap(L=>questions(L,"g"))).slice(0,TOETS_N.g)];
+ return [...w,...phr(shuffle(LESSONS.flatMap(L=>L.P)).slice(0,TOETS_N.p)),...shuffle(LESSONS.flatMap(L=>questions(L,"g"))).slice(0,TOETS_N.g)];
 }
 
 function segHTML(){
@@ -189,7 +192,7 @@ function start(li,k,list,t,retry){
  let all,sec;
  if(li==="toets"){all=LESSONS.flatMap(L=>questions(L,"all"));list=list||toetsPick();sec=TOETS_SEC}
  else{all=questions(LESSONS[li],k);sec=sections(LESSONS[li]).find(s=>s.k===k).t}
- S={li,k,t,retry:!!retry,sec,all,list:shuffle(list||all).map(q=>({...q,kind:t==="mix"?(Math.random()<.5?"mc":"open"):t})),n:0,ok:0,bad:[]};
+ S={li,k,t,retry:!!retry,sec,all,list:shuffle(list||all).map(q=>({...q,kind:q.open?"open":t==="mix"?(Math.random()<.5?"mc":"open"):t})),n:0,ok:0,bad:[]};
  show();
 }
 function choices(q){
